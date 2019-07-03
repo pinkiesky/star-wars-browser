@@ -1,6 +1,6 @@
 <template>
   <Surface width="250px" height="250px">
-    data
+    {{ char.name }}
   </Surface>
 </template>
 
@@ -10,6 +10,12 @@ import Surface from '../Surface';
 export default {
   components: {
     Surface
-  }
+  },
+  props: {
+    char: {
+      type: Object,
+      required: true,
+    },
+  },
 }
 </script>

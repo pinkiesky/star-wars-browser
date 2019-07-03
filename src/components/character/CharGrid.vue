@@ -1,6 +1,6 @@
 <template>
   <div class="char-grid">
-    <Char v-for="ch in list" :key="ch">{{ ch }}</Char>
+    <Char v-for="p in people" :key="p.url" :char="p"/>
   </div>
 </template>
 
@@ -10,6 +10,12 @@ import Char from './Char';
 export default {
   components: {
     Char,
+  },
+  props: {
+    people: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
