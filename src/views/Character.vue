@@ -1,6 +1,7 @@
 <template>
-  <div v-if="!character.network">
-    <Surface>
+  <div>
+    <Spinner v-if="character.network"/>
+    <Surface v-else="">
       <h2>{{ character.data.name }}</h2>
       <div class="info-container">
         <LabeledData label="height" postfix="sm">{{ character.data.height }}</LabeledData>
@@ -11,7 +12,8 @@
         <LabeledData label="gender">{{ character.data.gender }}</LabeledData>
       </div>
     </Surface>
-    <Surface v-if="!films.network">
+    <Spinner v-if="films.network"/>
+    <Surface v-else="">
       <h2>Films</h2>
       <div style="display: flex; flex-direction: row; overflow: auto">
         <FilmCard v-for="film in films.data" :key="film.episode_id" :film="film"/>
@@ -24,13 +26,14 @@
 import Surface from '@/components/Surface.vue';
 import FilmCard from '@/components/FilmCard.vue';
 import LabeledData from '@/components/LabeledData.vue';
+import Spinner from '@/components/Spinner.vue';
 import api, { instance } from '@/api';
 
 
 export default {
   name: 'character',
   components: {
-    Surface, LabeledData, FilmCard,
+    Surface, LabeledData, FilmCard, Spinner,
   },
   data() {
     return {
