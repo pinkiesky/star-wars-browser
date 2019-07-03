@@ -1,63 +1,100 @@
 <template>
-  <Surface v-if="character" width="800" height="600">
-    <h2>{{ character.name }}</h2>
-    <LabeledData label="height" postfix="sm">{{ character.height }}</LabeledData>
-    <LabeledData label="mass" postfix="kg">{{ character.mass }}</LabeledData>
-    <LabeledData label="hail color">{{ character.hair_color }}</LabeledData>
-    <LabeledData label="eye color">{{ character.eye_color }}</LabeledData>
-    <LabeledData label="birth year">{{ character.birth_year }}</LabeledData>
-    <LabeledData label="gender">{{ character.gender }}</LabeledData>
-  </Surface>
+  <div v-if="!character.network">
+    <Surface>
+      <h2>{{ character.data.name }}</h2>
+      <div class="info-container">
+        <LabeledData label="height" postfix="sm">{{ character.data.height }}</LabeledData>
+        <LabeledData label="mass" postfix="kg">{{ character.data.mass }}</LabeledData>
+        <LabeledData label="hail color">{{ character.data.hair_color }}</LabeledData>
+        <LabeledData label="eye color">{{ character.data.eye_color }}</LabeledData>
+        <LabeledData label="birth year">{{ character.data.birth_year }}</LabeledData>
+        <LabeledData label="gender">{{ character.data.gender }}</LabeledData>
+      </div>
+    </Surface>
+    <Surface v-if="!films.network">
+      <h2>Films</h2>
+      <div style="display: flex; flex-direction: row; overflow: auto">
+        <FilmCard v-for="film in films.data" :key="film.episode_id" :film="film"/>
+      </div>
+    </Surface>
+  </div>
 </template>
 
 <script>
 import Surface from '@/components/Surface.vue';
+import FilmCard from '@/components/FilmCard.vue';
 import LabeledData from '@/components/LabeledData.vue';
-import api from '@/api';
+import api, { instance } from '@/api';
 
 
 export default {
   name: 'character',
   components: {
-    Surface, LabeledData,
+    Surface, LabeledData, FilmCard,
   },
   data() {
     return {
-      character: null,
-      error: null,
-      network: false,
+      character: {
+        data: null,
+        error: null,
+        network: true,
+      },
+      films: {
+        data: null,
+        error: null,
+        network: false,
+      },
     };
   },
-  created () {
+  created() {
     this.loadCharacterByRoute();
   },
   watch: {
-    '$route': 'loadCharacterByRoute',
+    $route: 'loadCharacterByRoute',
   },
   methods: {
     async loadCharacterByRoute() {
-      this.character = null;
-      this.network = true;
-      this.error = null;
+      this.character.network = true;
+      this.films.network = true;
 
       try {
         const { id } = this.$route.params;
-        this.character = await api.people.byId(id);
+        this.character.data = await api.people.byId(id);
       } catch (err) {
-        this.error = err;
+        this.character.error = err;
         console.log(err);
       } finally {
-        this.network = false;
+        this.character.network = false;
+      }
+
+      try {
+        const fetching = this.character.data.films
+          .map(instance.get);
+        this.films.data = await Promise.all(fetching);
+      } catch (err) {
+        this.films.error = err;
+        console.log(err);
+      } finally {
+        this.films.network = false;
       }
     },
   },
 };
 </script>
 
-
 <style lang="stylus">
 .label
   font-size 80%
   opacity .8
   text-transform uppercase
+
+.info-container
+  display flex
+  flex-direction row
+  justify-content space-between
+  flex-wrap wrap
+
+  > div
+    @media screen and (max-width: 600px)
+      flex 1 0 33.3%
 </style>
