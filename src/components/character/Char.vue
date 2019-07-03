@@ -1,20 +1,22 @@
 <template>
   <Surface width="250px" height="250px">
-    <div class="char-bg" :class="{ 'char-bg_female': char.gender === 'female' }"></div>
+    <div class="char-bg" :class="{ 'char-bg_female': char.gender === 'female' }"/>
     <div class="char-name">{{ char.name }}</div>
-    <div class="char-desc">Films: {{ char.films.length }}, starships: {{ char.starships.length }}</div>
-    <router-link 
+    <div class="char-desc">
+      Films: {{ char.films.length }}, starships: {{ char.starships.length }}
+    </div>
+    <router-link
       :to="{ name: 'char', params: { id: charId }}"
     >Info</router-link>
   </Surface>
 </template>
 
 <script>
-import Surface from '../Surface';
+import Surface from '../Surface.vue';
 
 export default {
   components: {
-    Surface
+    Surface,
   },
   props: {
     char: {
@@ -32,11 +34,11 @@ export default {
       const urlParts = this.char.url
         .split('/')
         .filter(s => s.length);
-      
+
       return urlParts[urlParts.length - 1];
     },
   },
-}
+};
 </script>
 
 <style lang="stylus">

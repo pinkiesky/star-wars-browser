@@ -9,18 +9,18 @@
 </template>
 
 <script>
-import Surface from './Surface';
-import LabeledData from './LabeledData';
+import Surface from './Surface.vue';
+import LabeledData from './LabeledData.vue';
 
 export default {
   props: {
     film: {
       type: Object,
       required: true,
-    }
+    },
   },
   components: {
     Surface, LabeledData,
   },
-}
+};
 </script>

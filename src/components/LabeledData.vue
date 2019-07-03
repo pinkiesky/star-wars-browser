@@ -11,7 +11,7 @@ export default {
     label: String,
     postfix: String,
   },
-}
+};
 </script>
 
 
@@ -30,4 +30,3 @@ export default {
   margin-left 2px
 
 </style>
-

@@ -62,7 +62,7 @@ export default {
         this.character.data = await api.people.byId(id);
       } catch (err) {
         this.character.error = err;
-        console.log(err);
+        console.error(err);
       } finally {
         this.character.network = false;
       }
@@ -73,7 +73,7 @@ export default {
         this.films.data = await Promise.all(fetching);
       } catch (err) {
         this.films.error = err;
-        console.log(err);
+        console.error(err);
       } finally {
         this.films.network = false;
       }

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Char from './Char';
+import Char from './Char.vue';
 
 export default {
   components: {
@@ -19,7 +19,7 @@ export default {
   },
   data() {
     return {
-      list: [1, 2, 3, 4]
+      list: [1, 2, 3, 4],
     };
   },
 };

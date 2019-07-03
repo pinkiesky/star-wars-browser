@@ -1,26 +1,26 @@
 import axios from 'axios';
 
-export const api = axios.create({
+export const instance = axios.create({
   baseURL: 'https://swapi.co/api/',
 });
 
-api.interceptors.response.use(response => response.data);
+instance.interceptors.response.use(response => response.data);
 
 function generateResource(name) {
   return {
     list: (prevResults = null) => {
       if (prevResults && prevResults.next) {
-        return api.get(prevResults.next);
+        return instance.get(prevResults.next);
       }
 
       if (prevResults && !prevResults.next) {
         throw new Error('End reached');
       }
 
-      return api.get(`/${name}/`);
+      return instance.get(`/${name}/`);
     },
-    byId: id => api.get(`/${name}/${id}/`),
-    schema: () => api.get(`/${name}/schema/`),
+    byId: id => instance.get(`/${name}/${id}/`),
+    schema: () => instance.get(`/${name}/schema/`),
   };
 }
 
