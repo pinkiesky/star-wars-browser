@@ -1,11 +1,13 @@
 <template>
   <div>
-    <CharGrid v-if="!people.loading && people.data" :people="people.data.results"/>
+    <CharGrid v-if="people" :people="peopleList"/>
+    <infinite-loading @infinite="loadNextPartOfData" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import InfiniteLoading from 'vue-infinite-loading';
 import CharGrid from '@/components/character/CharGrid.vue';
 import api from '@/api';
 
@@ -13,32 +15,36 @@ import api from '@/api';
 export default {
   name: 'home',
   components: {
-    CharGrid,
+    CharGrid, InfiniteLoading,
   },
   data() {
     return {
-      people: {
-        loading: false,
-        data: null,
-        error: null,
-      },
+      /**
+       * Last swapi answer. `null` for first request
+       * @type {Object|null}
+       */
+      people: null,
+      /**
+       * Full flat collections of `people.results`
+       * @type {Array}
+       */
+      peopleList: [],
     };
   },
-  mounted() {
-    this.loadPeople();
-  },
   methods: {
-    async loadPeople() {
-      this.people.loading = true;
-      this.people.error = null;
+    async loadNextPartOfData($state) {
+      if (this.people && !this.people.next) {
+        $state.complete();
+        return;
+      }
 
       try {
-        this.people.data = await api.people.list();
+        this.people = await api.people.list(this.people);
+        this.peopleList.splice(this.peopleList.length, 0, ...this.people.results);
+
+        $state.loaded();
       } catch (err) {
-        this.people.error = err;
-        console.error(err);
-      } finally {
-        this.people.loading = false;
+        $state.error();
       }
     },
   },
