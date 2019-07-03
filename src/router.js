@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/Home.vue';
+import WIP from './views/WIP.vue';
 import Character from './views/Character.vue';
 
 Vue.use(Router);
@@ -16,6 +17,10 @@ export default new Router({
       path: '/char/:id',
       name: 'char',
       component: Character,
+    },
+    {
+      path: '*',
+      component: WIP,
     },
   ],
 });
