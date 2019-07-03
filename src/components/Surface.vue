@@ -21,6 +21,7 @@ export default {
       return {
         width: this.width,
         height: this.height,
+        minWidth: this.width,
       };
     },
   },
@@ -44,4 +45,7 @@ export default {
 
   display flex
   flex-direction column
+
+  @media screen and (max-width: 600px)
+    margin 4px
 </style>
