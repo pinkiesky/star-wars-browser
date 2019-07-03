@@ -5,11 +5,7 @@
 <script>
 export default {
   props: {
-    width: {
-      type: String,
-      default: '32px',
-    },
-    height: {
+    size: {
       type: String,
       default: '32px',
     },
@@ -17,8 +13,8 @@ export default {
   computed: {
     styles() {
       return {
-        width: this.width,
-        height: this.height,
+        width: this.size,
+        height: this.size,
       };
     },
   },
