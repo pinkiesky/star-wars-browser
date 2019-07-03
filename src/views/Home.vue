@@ -1,7 +1,9 @@
 <template>
   <div>
     <CharGrid v-if="people" :people="peopleList"/>
-    <infinite-loading @infinite="loadNextPartOfData" />
+    <infinite-loading @infinite="loadNextPartOfData">
+      <Spinner slot="spinner"/>
+    </infinite-loading>
   </div>
 </template>
 
@@ -9,13 +11,14 @@
 // @ is an alias to /src
 import InfiniteLoading from 'vue-infinite-loading';
 import CharGrid from '@/components/character/CharGrid.vue';
+import Spinner from '@/components/Spinner.vue';
 import api from '@/api';
 
 
 export default {
   name: 'home',
   components: {
-    CharGrid, InfiniteLoading,
+    CharGrid, InfiniteLoading, Spinner,
   },
   data() {
     return {
