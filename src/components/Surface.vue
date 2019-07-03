@@ -31,13 +31,17 @@ export default {
 <style lang="stylus" scoped>
 .surface
   border 1px solid #eee
-  border-radius 3px
+  border-radius 6px
+  overflow hidden
 
-  margin 4px
-  padding 8px
+  margin 6px
+  padding 12px
 
   box-sizing border-box
 
   box-shadow 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
   background-color white
+
+  display flex
+  flex-direction column
 </style>
