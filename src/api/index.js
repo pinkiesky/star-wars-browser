@@ -8,7 +8,17 @@ api.interceptors.response.use(response => response.data);
 
 function generateResource(name) {
   return {
-    list: () => api.get(`/${name}/`),
+    list: (prevResults = null) => {
+      if (prevResults && prevResults.next) {
+        return api.get(prevResults.next);
+      }
+
+      if (prevResults && !prevResults.next) {
+        throw new Error('End reached');
+      }
+
+      return api.get(`/${name}/`);
+    },
     byId: id => api.get(`/${name}/${id}/`),
     schema: () => api.get(`/${name}/schema/`),
   };
