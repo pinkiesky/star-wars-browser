@@ -1,6 +1,9 @@
 <template>
   <div>
     <Spinner v-if="character.network"/>
+    <Surface v-else-if="character.error">
+      Something went wrong with API. <a @click="loadCharacterByRoute">Retry</a>
+    </Surface>
     <Surface v-else="">
       <h2>{{ character.data.name }}</h2>
       <div class="info-container">
@@ -12,7 +15,11 @@
         <LabeledData label="gender">{{ character.data.gender }}</LabeledData>
       </div>
     </Surface>
+
     <Spinner v-if="films.network"/>
+    <Surface v-else-if="films.error">
+      Something went wrong with API. <a @click="loadCharacterByRoute">Retry</a>
+    </Surface>
     <Surface v-else="">
       <h2>Films</h2>
       <div style="display: flex; flex-direction: row; overflow: auto">
@@ -59,6 +66,8 @@ export default {
     async loadCharacterByRoute() {
       this.character.network = true;
       this.films.network = true;
+      this.character.error = null;
+      this.films.error = null;
 
       try {
         const { id } = this.$route.params;
