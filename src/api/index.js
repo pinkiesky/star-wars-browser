@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const instance = axios.create({
   baseURL: 'https://swapi.co/api/',
+  timeout: 7500,
 });
 
 instance.interceptors.response.use(response => response.data);
